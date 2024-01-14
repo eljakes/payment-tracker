@@ -1,3 +1,4 @@
+// src/SponsorForm.js
 import React, { useState } from 'react';
 
 import { firestore } from './firebaseConfig';
@@ -43,13 +44,18 @@ function SponsorForm() {
     e.preventDefault();
 
     if (name && contribution) {
-      await firestore.collection('sponsors').add({
-        name,
-        contribution: parseInt(contribution),
-      });
+      try {
+        // Use firestore.collection() to interact with the Firestore collection
+        await firestore.collection('sponsors').add({
+          name,
+          contribution: parseInt(contribution),
+        });
 
-      setName('');
-      setContribution('');
+        setName('');
+        setContribution('');
+      } catch (error) {
+        console.error('Error adding sponsor:', error);
+      }
     }
   };
 
@@ -67,7 +73,7 @@ function SponsorForm() {
           onChange={(e) => setContribution(e.target.value)}
         />
 
-        <StyledButton type="submit">Add Sponsor</StyledButton>
+        <StyledButton type="submit">Add Sponsor Contribution</StyledButton>
       </StyledForm>
     </FormContainer>
   );
